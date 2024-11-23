@@ -35,17 +35,15 @@ app.use(hpp()); //no duplicite body & queryString values
 
 
 
-//ROUTES routes will come here
+//ROUTES
 app.use(express.static(path.join(__dirname, '../public')));
+app.get("/", (req, res) => { res.sendFile(path.join(__dirname, '../public', 'index.html')); });
 app.use("/api/test", testRoutes);
 
 
 
 //HANDLE ERRORS (must come at the end)
 app.use(errorHandler);
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, '../public', 'index.html'));
-});
 
 
 

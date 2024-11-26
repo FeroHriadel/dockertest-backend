@@ -4,6 +4,7 @@ import { createTables } from "./db/createTables";
 import { addAppMiddleware } from "./utils/appMiddleware";
 import "colors";
 import testRoutes from "./routes/testRoutes";
+import itemRoutes from "./routes/itemRoutes";
 import errorHandler from "./middleware/errorHandler";
 import path from "path";
 import dotenv from "dotenv";
@@ -18,7 +19,7 @@ dotenv.config();
   await createTables();
 
 
-  //MIDLEWARE
+  //MIDDLEWARE
   const app = express();
   addAppMiddleware(app);
 
@@ -27,6 +28,7 @@ dotenv.config();
   app.use(express.static(path.join(__dirname, '../public')));
   app.get("/", (req, res) => { res.sendFile(path.join(__dirname, '../public', 'index.html')); });
   app.use("/api/test", testRoutes);
+  app.use("/api/items", itemRoutes);
 
 
   //HANDLE ERRORS (must come at the end)

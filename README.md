@@ -1,6 +1,7 @@
 # DOCKER TEST - BACKEND
 This is my Docker Test backend. 
 
+
 ### LOCAL DEVELOPMENT DB (for development only):
 - this is inteded for local development only. In production backend will connect to AWS RDS instead.
 - Start Docker Desktop:
@@ -63,6 +64,7 @@ AWS_SECRET_ACCESS_KEY=your-secret-access-key
 AWS_REGION=your-region
 ```
 
+
 ### LOGGING
 - the app logs to AWS CloudWatch (note for me: the yahoo account)
 - create a user in AWS IAM and attach these privileges to them:
@@ -100,5 +102,8 @@ import { logToCloudWatch } from "./logs/logs";
 await logToCloudWatch('Your message');
 ```
 
+
+### REPO
+- push to github
 
 

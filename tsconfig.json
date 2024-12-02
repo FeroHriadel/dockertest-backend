@@ -5,9 +5,8 @@
     "strict": true,
     "outDir": "./dist",
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "typeRoots": ["./node_modules", "./src/types"]
+    "skipLibCheck": true,  // Keep this to ignore type errors in libraries
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*"],  // Includes all TypeScript files in the src directory
+  "exclude": ["node_modules"]  // Exclude node_modules directory to speed up compilation
 }

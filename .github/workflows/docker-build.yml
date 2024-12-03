@@ -14,11 +14,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    # Log the AWS credentials (only show part for security purposes)
-    - name: Log AWS credentials (sanitized)
+      # check if aws credentials work
+    - name: Test AWS credentials
       run: |
-        echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}"
-        echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+        aws sts get-caller-identity --query Arn
+    
 
     # Set up Docker Buildx (used to build images for different architectures)
     - name: Set up Docker Buildx

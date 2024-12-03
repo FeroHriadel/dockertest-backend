@@ -3,45 +3,39 @@ name: Build and Push Docker Image to ECR
 on:
   push:
     branches:
-      - main  # Adjust the branch as needed
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    # Checkout the code from the repository
     - name: Checkout code
       uses: actions/checkout@v2
 
-      # check if aws credentials work
-    - name: Test AWS credentials
-      run: |
-        aws sts get-caller-identity --query Arn
-    
-
-    # Set up Docker Buildx (used to build images for different architectures)
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
-    # Set AWS Region
-    - name: Set AWS Region
-      run: echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> $GITHUB_ENV
+    - name: Configure AWS CLI
+      run: |
+        aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws configure set region ${{ secrets.AWS_REGION }}
 
-    # Log in to Amazon ECR
+    - name: Test AWS credentials
+      run: |
+        aws sts get-caller-identity --query Arn  # Check if AWS credentials work
+
     - name: Log in to Amazon ECR
       uses: aws-actions/amazon-ecr-login@v1
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        region: ${{ secrets.AWS_REGION }}
 
-    # Build the Docker image
     - name: Build Docker image
       run: |
         docker build -t ${{ secrets.ECR_REPO_URL }} .
         docker tag ${{ secrets.ECR_REPO_URL }}:latest ${{ secrets.ECR_REPO_URL }}:${{ github.sha }}
 
-    # Push the Docker image to ECR
     - name: Push Docker image to ECR
       run: |
         docker push ${{ secrets.ECR_REPO_URL }}:latest
